@@ -1,0 +1,11 @@
+# Cloudflare Pages project configuration.
+#
+# Deploy with:  npm run build && npx wrangler pages deploy
+# Preview with: npm run preview   (serves the built output exactly as Pages will,
+#                                  honouring _headers and 404.html)
+#
+# `name` must match the Pages project name in your Cloudflare dashboard.
+
+name = "quicktools"
+compatibility_date = "2026-08-01"
+pages_build_output_dir = "dist/app/browser"

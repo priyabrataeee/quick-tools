@@ -1,0 +1,439 @@
+@import 'tailwindcss';
+
+/*
+ * Dark mode is driven by a `dark` class on <html>, set by ThemeService (and by
+ * an inline script in index.html before first paint to avoid a flash).
+ */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ---------------------------------------------------------------------------
+ * Design tokens
+ * Every colour in the app comes from these variables so that a single block
+ * swap flips the entire UI between light and dark.
+ * ------------------------------------------------------------------------ */
+:root {
+  --qt-bg: #ffffff;
+  --qt-bg-subtle: #f7f7f8;
+  --qt-bg-elevated: #ffffff;
+  --qt-surface: rgb(255 255 255 / 0.72);
+  --qt-surface-strong: rgb(255 255 255 / 0.92);
+  --qt-border: rgb(9 9 11 / 0.1);
+  --qt-border-strong: rgb(9 9 11 / 0.18);
+  --qt-fg: #09090b;
+  --qt-muted: #52525b;
+  --qt-faint: #71717a;
+  --qt-brand: #4f46e5;
+  --qt-brand-hover: #4338ca;
+  --qt-brand-fg: #ffffff;
+  --qt-brand-soft: rgb(79 70 229 / 0.1);
+  --qt-accent: #7c3aed;
+  --qt-success: #15803d;
+  --qt-success-soft: rgb(21 128 61 / 0.1);
+  --qt-danger: #dc2626;
+  --qt-danger-soft: rgb(220 38 38 / 0.1);
+  --qt-warning: #b45309;
+  --qt-warning-soft: rgb(180 83 9 / 0.12);
+  --qt-ring: rgb(79 70 229 / 0.45);
+  --qt-shadow: 0 1px 2px rgb(9 9 11 / 0.04), 0 8px 24px -8px rgb(9 9 11 / 0.12);
+  --qt-glow: radial-gradient(60% 60% at 50% 0%, rgb(99 102 241 / 0.18), transparent 70%);
+}
+
+.dark {
+  --qt-bg: #09090b;
+  --qt-bg-subtle: #0d0d11;
+  --qt-bg-elevated: #131318;
+  --qt-surface: rgb(255 255 255 / 0.04);
+  --qt-surface-strong: rgb(255 255 255 / 0.07);
+  --qt-border: rgb(255 255 255 / 0.1);
+  --qt-border-strong: rgb(255 255 255 / 0.18);
+  --qt-fg: #fafafa;
+  --qt-muted: #a1a1aa;
+  --qt-faint: #8b8b94;
+  --qt-brand: #818cf8;
+  --qt-brand-hover: #a5b4fc;
+  --qt-brand-fg: #0b0b12;
+  --qt-brand-soft: rgb(129 140 248 / 0.15);
+  --qt-accent: #a78bfa;
+  --qt-success: #4ade80;
+  --qt-success-soft: rgb(74 222 128 / 0.14);
+  --qt-danger: #f87171;
+  --qt-danger-soft: rgb(248 113 113 / 0.14);
+  --qt-warning: #fbbf24;
+  --qt-warning-soft: rgb(251 191 36 / 0.14);
+  --qt-ring: rgb(129 140 248 / 0.5);
+  --qt-shadow: 0 1px 2px rgb(0 0 0 / 0.3), 0 12px 32px -12px rgb(0 0 0 / 0.6);
+  --qt-glow: radial-gradient(60% 60% at 50% 0%, rgb(99 102 241 / 0.22), transparent 70%);
+}
+
+/* Expose the tokens to Tailwind so `bg-bg`, `text-muted`, `border-line` work.
+ * `inline` makes the utilities emit `var(--qt-*)` directly, which is what makes
+ * them respond to the runtime theme switch. */
+@theme inline {
+  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  --color-bg: var(--qt-bg);
+  --color-bg-subtle: var(--qt-bg-subtle);
+  --color-elevated: var(--qt-bg-elevated);
+  --color-surface: var(--qt-surface);
+  --color-surface-strong: var(--qt-surface-strong);
+  --color-line: var(--qt-border);
+  --color-line-strong: var(--qt-border-strong);
+  --color-fg: var(--qt-fg);
+  --color-muted: var(--qt-muted);
+  --color-faint: var(--qt-faint);
+  --color-brand: var(--qt-brand);
+  --color-brand-hover: var(--qt-brand-hover);
+  --color-brand-fg: var(--qt-brand-fg);
+  --color-brand-soft: var(--qt-brand-soft);
+  --color-accent: var(--qt-accent);
+  --color-success: var(--qt-success);
+  --color-success-soft: var(--qt-success-soft);
+  --color-danger: var(--qt-danger);
+  --color-danger-soft: var(--qt-danger-soft);
+  --color-warning: var(--qt-warning);
+  --color-warning-soft: var(--qt-warning-soft);
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--qt-bg);
+    color: var(--qt-fg);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  *:focus-visible {
+    outline: 2px solid var(--qt-ring);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background: var(--qt-brand-soft);
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--qt-border-strong);
+    border-radius: 9999px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--qt-faint);
+    background-clip: padding-box;
+  }
+
+  /* Native controls should follow the theme rather than always render light. */
+  input,
+  textarea,
+  select,
+  button {
+    font: inherit;
+    color: inherit;
+  }
+
+  input[type='range'] {
+    accent-color: var(--qt-brand);
+  }
+  input[type='checkbox'],
+  input[type='radio'] {
+    accent-color: var(--qt-brand);
+  }
+}
+
+/* ---------------------------------------------------------------------------
+ * Component classes
+ * ------------------------------------------------------------------------ */
+@layer components {
+  .glass {
+    background-color: var(--qt-surface);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid var(--qt-border);
+  }
+
+  .card {
+    background-color: var(--qt-surface);
+    border: 1px solid var(--qt-border);
+    border-radius: 1rem;
+    box-shadow: var(--qt-shadow);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: 0.75rem;
+    padding: 0.5rem 0.95rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.25rem;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition:
+      background-color 0.15s ease,
+      border-color 0.15s ease,
+      color 0.15s ease,
+      transform 0.1s ease;
+    white-space: nowrap;
+  }
+  .btn:active:not(:disabled) {
+    transform: translateY(1px);
+  }
+  .btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .btn-primary {
+    background-color: var(--qt-brand);
+    color: var(--qt-brand-fg);
+  }
+  .btn-primary:hover:not(:disabled) {
+    background-color: var(--qt-brand-hover);
+  }
+
+  .btn-secondary {
+    background-color: var(--qt-surface-strong);
+    border-color: var(--qt-border);
+    color: var(--qt-fg);
+  }
+  .btn-secondary:hover:not(:disabled) {
+    border-color: var(--qt-border-strong);
+    background-color: var(--qt-brand-soft);
+  }
+
+  .btn-ghost {
+    background-color: transparent;
+    color: var(--qt-muted);
+  }
+  .btn-ghost:hover:not(:disabled) {
+    background-color: var(--qt-surface-strong);
+    color: var(--qt-fg);
+  }
+
+  .btn-danger {
+    background-color: var(--qt-danger-soft);
+    color: var(--qt-danger);
+  }
+  .btn-danger:hover:not(:disabled) {
+    background-color: var(--qt-danger-soft);
+    filter: brightness(1.1);
+  }
+
+  .input,
+  .textarea,
+  .select {
+    width: 100%;
+    background-color: var(--qt-bg-subtle);
+    border: 1px solid var(--qt-border);
+    border-radius: 0.75rem;
+    padding: 0.55rem 0.8rem;
+    font-size: 0.9375rem;
+    color: var(--qt-fg);
+    transition:
+      border-color 0.15s ease,
+      box-shadow 0.15s ease;
+  }
+  .input::placeholder,
+  .textarea::placeholder {
+    color: var(--qt-faint);
+  }
+  .input:focus,
+  .textarea:focus,
+  .select:focus {
+    outline: none;
+    border-color: var(--qt-brand);
+    box-shadow: 0 0 0 3px var(--qt-brand-soft);
+  }
+
+  .textarea {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    line-height: 1.6;
+    resize: vertical;
+  }
+
+  .label {
+    display: block;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--qt-muted);
+    margin-bottom: 0.35rem;
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    border-radius: 9999px;
+    border: 1px solid var(--qt-border);
+    padding: 0.35rem 0.8rem;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--qt-muted);
+    background-color: transparent;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    white-space: nowrap;
+  }
+  .chip:hover {
+    color: var(--qt-fg);
+    border-color: var(--qt-border-strong);
+  }
+  .chip[aria-pressed='true'],
+  .chip.is-active {
+    background-color: var(--qt-brand-soft);
+    border-color: var(--qt-brand);
+    color: var(--qt-brand);
+  }
+
+  .kbd {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 0.375rem;
+    border: 1px solid var(--qt-border);
+    background-color: var(--qt-bg-subtle);
+    padding: 0.1rem 0.35rem;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    line-height: 1.1rem;
+    color: var(--qt-faint);
+  }
+
+  /* Long-form SEO copy on tool pages. */
+  .prose-qt {
+    color: var(--qt-muted);
+    line-height: 1.75;
+  }
+  .prose-qt h2 {
+    color: var(--qt-fg);
+    font-size: 1.35rem;
+    font-weight: 650;
+    letter-spacing: -0.01em;
+    margin: 2rem 0 0.75rem;
+  }
+  .prose-qt h3 {
+    color: var(--qt-fg);
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin: 1.5rem 0 0.5rem;
+  }
+  .prose-qt p {
+    margin-bottom: 1rem;
+  }
+  .prose-qt ul {
+    list-style: disc;
+    padding-left: 1.25rem;
+    margin-bottom: 1rem;
+  }
+  .prose-qt li {
+    margin-bottom: 0.375rem;
+  }
+  .prose-qt code {
+    font-family: var(--font-mono);
+    font-size: 0.85em;
+    background-color: var(--qt-brand-soft);
+    color: var(--qt-brand);
+    padding: 0.1rem 0.35rem;
+    border-radius: 0.35rem;
+  }
+  .prose-qt a {
+    color: var(--qt-brand);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Screen-reader-only, but focusable (used for the skip link). */
+  .sr-only-focusable:not(:focus):not(:focus-within) {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+
+  .hero-glow {
+    background-image: var(--qt-glow);
+  }
+
+  .animate-rise {
+    animation: qt-rise 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .animate-fade {
+    animation: qt-fade 0.3s ease both;
+  }
+  .animate-pop {
+    animation: qt-pop 0.18s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+}
+
+@keyframes qt-rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes qt-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes qt-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.97) translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}

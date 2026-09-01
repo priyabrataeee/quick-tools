@@ -1,0 +1,116 @@
+import { Tool } from '../../tool.types';
+
+export const CSS_TOOLS: Tool[] = [
+  {
+    id: 'box-shadow-generator',
+    name: 'Box Shadow Generator',
+    description: 'Design CSS box shadows visually, including layered and inset shadows.',
+    category: 'css',
+    icon: 'shadow',
+    keywords: ['drop shadow', 'elevation', 'inset', 'material shadow'],
+    added: '2026-01-14',
+    popular: true,
+    faqs: [
+      { q: 'What do the four lengths mean?', a: 'In order: horizontal offset, vertical offset, blur radius and spread radius. Offsets move the shadow, blur softens the edge and spread grows or shrinks it.' },
+      { q: 'How do I make a realistic shadow?', a: 'Stack two or three layers with increasing blur and decreasing opacity. This tool supports multiple layers for exactly that reason.' },
+      { q: 'What does inset do?', a: 'It draws the shadow inside the element instead of outside, which is how you create pressed or recessed effects.' },
+    ],
+    about: [
+      'The box-shadow property is the main tool for suggesting depth on the web, but its four lengths interact in ways that are hard to predict from the numbers alone.',
+      'This generator gives you sliders for every value with a live preview, supports multiple stacked layers for realistic soft shadows, and outputs copy-ready CSS.',
+    ],
+  },
+  {
+    id: 'gradient-generator',
+    name: 'CSS Gradient Generator',
+    description: 'Build linear, radial and conic gradients with unlimited color stops.',
+    category: 'css',
+    icon: 'gradient',
+    keywords: ['linear gradient', 'radial', 'conic', 'background', 'color stops'],
+    added: '2026-01-14',
+    popular: true,
+    trending: true,
+    faqs: [
+      { q: 'Why does my gradient look muddy in the middle?', a: 'Blending through sRGB can pass near grey. Adding an intermediate stop in a more saturated hue fixes it.' },
+      { q: 'Can I use more than two colors?', a: 'Yes, add as many stops as you like and drag each one to position it along the gradient line.' },
+      { q: 'What is a conic gradient for?', a: 'It sweeps colour around a centre point, which makes it the natural choice for pie charts, colour wheels and progress rings.' },
+    ],
+    about: [
+      'CSS gradients render as images without a single network request, scale to any size without artefacts and animate smoothly - which is why they replaced background images for most decorative work.',
+      'This generator supports linear, radial and conic gradients with unlimited draggable colour stops, angle control, and live CSS output you can paste straight into a stylesheet.',
+    ],
+  },
+  {
+    id: 'border-radius-generator',
+    name: 'Border Radius Generator',
+    description: 'Craft rounded and organic shapes with per-corner border radius control.',
+    category: 'css',
+    icon: 'corner',
+    keywords: ['rounded corners', 'blob', 'squircle', 'elliptical'],
+    added: '2026-02-12',
+    faqs: [
+      { q: 'What does the slash in the shorthand mean?', a: 'Values before the slash are horizontal radii and values after it are vertical radii, which is how you make elliptical rather than circular corners.' },
+      { q: 'How do I make a circle?', a: 'Set every corner to 50% on a square element.' },
+      { q: 'What are the organic blob shapes?', a: 'They come from mismatched horizontal and vertical radii on each corner, which produces the asymmetric shapes popular in modern illustration.' },
+    ],
+    about: [
+      'Border radius is deceptively deep: each corner takes two radii, and the eight-value shorthand that results is almost impossible to write by eye.',
+      'This generator exposes every corner independently with a live preview, offers a randomiser for organic blob shapes, and always shows the shortest valid shorthand for what you have built.',
+    ],
+  },
+  {
+    id: 'clamp-generator',
+    name: 'CSS Clamp Generator',
+    description: 'Generate fluid typography and spacing with clamp() and viewport units.',
+    category: 'css',
+    icon: 'ruler',
+    keywords: ['fluid typography', 'responsive', 'vw', 'rem', 'min max'],
+    added: '2026-02-28',
+    trending: true,
+    faqs: [
+      { q: 'How does clamp work?', a: 'It takes a minimum, a preferred value and a maximum, and returns the preferred value clamped between the other two.' },
+      { q: 'Why is the preferred value a formula?', a: 'The linear formula makes the size scale smoothly with the viewport between your two breakpoints instead of jumping at each one.' },
+      { q: 'Is it accessible?', a: 'Yes, provided the preferred value includes a rem component, which this generator always emits so that browser zoom and user font size still work.' },
+    ],
+    about: [
+      'Fluid typography scales text smoothly with the viewport instead of stepping between media queries, and clamp() expresses it in a single line of CSS.',
+      'Give this generator your minimum and maximum sizes and the viewport widths they apply at, and it solves the linear equation for you and emits a clamp() expression that stays zoom-accessible.',
+    ],
+  },
+  {
+    id: 'flexbox-generator',
+    name: 'Flexbox Generator',
+    description: 'Learn and generate flexbox layouts with every property visualised.',
+    category: 'css',
+    icon: 'columns',
+    keywords: ['flex', 'justify content', 'align items', 'layout', 'flex-wrap'],
+    added: '2026-03-08',
+    faqs: [
+      { q: 'What is the difference between justify-content and align-items?', a: 'justify-content distributes items along the main axis, align-items positions them on the cross axis. Flex direction decides which axis is which.' },
+      { q: 'Why do my items not wrap?', a: 'flex-wrap defaults to nowrap, so items shrink instead of moving to a new line. Set it to wrap.' },
+      { q: 'What does the flex shorthand mean?', a: 'It sets grow, shrink and basis in one declaration - flex: 1 means grow to fill, shrink if needed, starting from zero.' },
+    ],
+    about: [
+      'Flexbox is the workhorse of one-dimensional layout, but the interaction between direction, justification and alignment is much easier to learn by watching than by reading.',
+      'Toggle any property in this generator and the live preview updates immediately, with per-item grow, shrink and basis controls and copy-ready CSS for both the container and its children.',
+    ],
+  },
+  {
+    id: 'grid-generator',
+    name: 'CSS Grid Generator',
+    description: 'Compose CSS Grid layouts visually and export the code.',
+    category: 'css',
+    icon: 'grid',
+    keywords: ['grid template', 'columns', 'rows', 'gap', 'layout', 'fr'],
+    added: '2026-03-08',
+    faqs: [
+      { q: 'What is the fr unit?', a: 'A fraction of the free space left after fixed-size tracks are laid out. Two tracks of 1fr each take half the remaining space.' },
+      { q: 'When should I use grid instead of flexbox?', a: 'Grid controls rows and columns at once. Reach for it whenever alignment has to work in both directions.' },
+      { q: 'What does auto-fit with minmax do?', a: 'It creates as many columns as fit at your minimum width and lets them grow to share the space - responsive grids without a single media query.' },
+    ],
+    about: [
+      'CSS Grid is the only layout system on the web designed for two dimensions, and it removed the need for the float and table hacks that preceded it.',
+      'This generator lets you set track counts and sizes, adjust gaps, and place items across cells visually, then hands you the grid-template and grid-area declarations to paste into your stylesheet.',
+    ],
+  },
+];

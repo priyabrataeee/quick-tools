@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="QuickTools">
+  <defs>
+    <linearGradient id="qt" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#4f46e5" />
+      <stop offset="1" stop-color="#7c3aed" />
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="url(#qt)" />
+  <!-- The same bolt scripts/generate-icons.mjs rasterises, at the same 62% inset. -->
+  <path
+    d="M33.65 15.47 L17.12 35.31 L32 35.31 L30.35 48.53 L46.88 28.69 L32 28.69 Z"
+    fill="#fff"
+  />
+</svg>

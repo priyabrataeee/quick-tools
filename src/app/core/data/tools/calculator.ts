@@ -1,0 +1,116 @@
+import { Tool } from '../../tool.types';
+
+export const CALCULATOR_TOOLS: Tool[] = [
+  {
+    id: 'percentage-calculator',
+    name: 'Percentage Calculator',
+    description: 'Work out percentages, shares and percentage change in one place.',
+    category: 'calculator',
+    icon: 'percent',
+    keywords: ['percent', 'increase', 'decrease', 'ratio', 'change'],
+    added: '2026-01-12',
+    popular: true,
+    faqs: [
+      { q: 'What is the difference between percentage change and percentage points?', a: 'Going from 10% to 12% is a two percentage point rise but a 20% relative increase. The two are often confused in reporting.' },
+      { q: 'Why is percentage change not symmetric?', a: 'Because it is relative to the starting value. A rise from 100 to 150 is +50%, but the fall back from 150 to 100 is -33.3%.' },
+      { q: 'How is a negative starting value handled?', a: 'The change is divided by the absolute value of the start, which keeps the sign of the change meaningful.' },
+    ],
+    about: [
+      'Percentages express one quantity as a share of another scaled to 100, which makes very different magnitudes comparable at a glance.',
+      'This calculator covers the three questions people actually ask - what is X percent of Y, X is what percent of Y, and what is the percentage change from X to Y - and shows the formula behind each answer.',
+    ],
+  },
+  {
+    id: 'emi-calculator',
+    name: 'EMI Calculator',
+    description: 'Calculate loan EMI, total interest and a full amortisation schedule.',
+    category: 'calculator',
+    icon: 'bank',
+    keywords: ['loan', 'mortgage', 'home loan', 'car loan', 'amortisation', 'instalment'],
+    added: '2026-02-06',
+    popular: true,
+    trending: true,
+    faqs: [
+      { q: 'What formula is used?', a: 'The standard annuity formula: P times r times (1+r)^n divided by ((1+r)^n minus 1), where r is the monthly rate and n the number of months.' },
+      { q: 'Why does early EMI go mostly to interest?', a: 'Interest is charged on the outstanding balance, which is highest at the start. The principal share grows every month as the balance falls.' },
+      { q: 'Does this include fees or insurance?', a: 'No. It calculates the pure loan repayment. Processing fees, insurance and taxes are additional.' },
+    ],
+    about: [
+      'An equated monthly instalment keeps your payment constant across the loan while the split between interest and principal shifts steadily towards principal.',
+      'This calculator gives you the monthly instalment, the total interest paid over the term and a year-by-year amortisation schedule, so you can see exactly what a longer tenure or a slightly better rate is worth.',
+    ],
+  },
+  {
+    id: 'gst-calculator',
+    name: 'GST Calculator',
+    description: 'Add or remove GST at any rate and see the CGST/SGST split.',
+    category: 'calculator',
+    icon: 'receipt',
+    keywords: ['tax', 'vat', 'gst india', 'inclusive', 'exclusive', 'cgst', 'sgst'],
+    added: '2026-02-06',
+    faqs: [
+      { q: 'What is the reverse GST formula?', a: 'To strip tax from an inclusive price, divide by (1 + rate/100). The difference is the tax component.' },
+      { q: 'How is CGST and SGST split?', a: 'For intra-state supply the total is split equally between central and state GST. Inter-state supply uses a single IGST at the full rate.' },
+      { q: 'Which rates are supported?', a: 'The standard slabs of 0, 5, 12, 18 and 28 percent, plus any custom rate you enter.' },
+    ],
+    about: [
+      'Goods and Services Tax is charged as a percentage of the taxable value, and the everyday confusion is whether a quoted price already includes it.',
+      'This calculator works in both directions - adding tax to a net price or extracting it from a gross price - and breaks the result into CGST, SGST or IGST for invoicing.',
+    ],
+  },
+  {
+    id: 'sip-calculator',
+    name: 'SIP Calculator',
+    description: 'Project the maturity value of a monthly systematic investment plan.',
+    category: 'calculator',
+    icon: 'trending-up',
+    keywords: ['mutual fund', 'investment', 'monthly', 'returns', 'wealth'],
+    added: '2026-02-16',
+    popular: true,
+    faqs: [
+      { q: 'What formula is used?', a: 'The future value of an annuity due: M times ((1+i)^n minus 1) divided by i, times (1+i), where i is the monthly rate.' },
+      { q: 'Are returns guaranteed?', a: 'No. Market-linked returns vary, and this projection assumes a constant rate purely for illustration.' },
+      { q: 'What is a step-up SIP?', a: 'One where you raise the contribution by a fixed percentage each year, usually in line with income growth. It is supported as an option here.' },
+    ],
+    about: [
+      'A systematic investment plan invests a fixed amount on a fixed schedule, which averages your purchase price across market cycles and removes the need to time entry.',
+      'This calculator projects the maturity value of your contributions at an assumed annual return, separates the invested amount from the estimated gain, and supports an annual step-up.',
+    ],
+  },
+  {
+    id: 'compound-interest-calculator',
+    name: 'Compound Interest Calculator',
+    description: 'See how an investment grows with compounding and regular contributions.',
+    category: 'calculator',
+    icon: 'chart',
+    keywords: ['interest', 'savings', 'growth', 'annual', 'quarterly', 'monthly'],
+    added: '2026-02-16',
+    faqs: [
+      { q: 'How does compounding frequency change the result?', a: 'More frequent compounding earns interest on interest sooner, so the effective annual rate rises slightly as frequency increases.' },
+      { q: 'What is the difference from simple interest?', a: 'Simple interest is always calculated on the original principal. Compound interest is calculated on principal plus accumulated interest, which is what makes growth exponential.' },
+      { q: 'Is inflation accounted for?', a: 'Not by default. Enter a real rate - your nominal rate minus expected inflation - if you want the answer in today money.' },
+    ],
+    about: [
+      'Compounding is the mechanism behind long-term investment growth: each period earns a return on everything accumulated so far, not just on the original deposit.',
+      'This calculator shows the final balance, total interest and a year-by-year breakdown, and supports regular monthly contributions on top of the initial principal.',
+    ],
+  },
+  {
+    id: 'discount-calculator',
+    name: 'Discount Calculator',
+    description: 'Find the sale price, the amount saved and the effective discount.',
+    category: 'calculator',
+    icon: 'tag',
+    keywords: ['sale', 'off', 'markdown', 'price', 'savings', 'coupon'],
+    added: '2026-02-22',
+    faqs: [
+      { q: 'How do stacked discounts work?', a: 'They multiply rather than add. 20% off then a further 10% off is 28% off in total, not 30%.' },
+      { q: 'Can I work backwards from the sale price?', a: 'Yes, enter the original and final price and the tool reports the effective discount percentage.' },
+      { q: 'Is tax included?', a: 'Optionally. Add your tax rate and the tool shows the final amount payable after the discount is applied.' },
+    ],
+    about: [
+      'Discount maths is simple in principle and easy to get wrong in a shop, especially when offers stack or when tax is applied after the reduction.',
+      'This calculator handles all three directions - price after discount, discount from two prices, and stacked offers - and shows the amount you actually save.',
+    ],
+  },
+];

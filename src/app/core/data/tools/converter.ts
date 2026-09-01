@@ -1,0 +1,132 @@
+import { Tool } from '../../tool.types';
+
+export const CONVERTER_TOOLS: Tool[] = [
+  {
+    id: 'length-converter',
+    name: 'Length Converter',
+    description: 'Convert between metres, feet, inches, miles and eleven other units.',
+    category: 'converter',
+    icon: 'ruler',
+    keywords: ['distance', 'cm to inches', 'km to miles', 'metric', 'imperial'],
+    added: '2026-01-16',
+    popular: true,
+    faqs: [
+      { q: 'How exact are the conversions?', a: 'They use the internationally agreed definitions - one inch is exactly 25.4 millimetres - so the only error is display rounding.' },
+      { q: 'What is a nautical mile?', a: 'Exactly 1852 metres, defined as one minute of latitude, and used in marine and air navigation.' },
+      { q: 'Can I convert several units at once?', a: 'Yes. Enter one value and every supported unit updates simultaneously.' },
+    ],
+    about: [
+      'Length is the unit family people convert most often, and the metric and imperial systems have coexisted long enough that mixing them is a daily reality in engineering and construction.',
+      'This converter shows your value in every supported unit at once, from nanometres to nautical miles, with exact conversion factors and adjustable precision.',
+    ],
+  },
+  {
+    id: 'weight-converter',
+    name: 'Weight Converter',
+    description: 'Convert kilograms, pounds, ounces, stones and tonnes instantly.',
+    category: 'converter',
+    icon: 'weight',
+    keywords: ['mass', 'kg to lbs', 'grams', 'stone', 'ounce', 'ton'],
+    added: '2026-01-16',
+    faqs: [
+      { q: 'Is weight the same as mass?', a: 'Strictly no - mass is intrinsic while weight is a force - but in everyday use these units all measure mass.' },
+      { q: 'Which ton is used?', a: 'All three: the metric tonne of 1000 kg, the US short ton of 2000 lb and the UK long ton of 2240 lb.' },
+      { q: 'What is a stone?', a: 'Fourteen pounds, still commonly used for body weight in the UK and Ireland.' },
+    ],
+    about: [
+      'Recipes, shipping labels, gym equipment and medical records all use different mass units, and getting one wrong can range from an inedible cake to a genuinely serious error.',
+      'This converter handles every common metric and imperial mass unit at once with exact factors, including the three different definitions of a ton.',
+    ],
+  },
+  {
+    id: 'temperature-converter',
+    name: 'Temperature Converter',
+    description: 'Convert Celsius, Fahrenheit, Kelvin and Rankine.',
+    category: 'converter',
+    icon: 'thermometer',
+    keywords: ['celsius to fahrenheit', 'kelvin', 'degrees', 'weather'],
+    added: '2026-01-16',
+    popular: true,
+    faqs: [
+      { q: 'Why is temperature conversion not a simple ratio?', a: 'Celsius and Fahrenheit have different zero points, so conversion needs both a scale factor and an offset.' },
+      { q: 'What is absolute zero?', a: 'Minus 273.15 Celsius, or 0 Kelvin - the point where thermal motion is at a minimum. The converter warns if you go below it.' },
+      { q: 'Where do the scales cross?', a: 'At minus 40 degrees, Celsius and Fahrenheit read the same number.' },
+    ],
+    about: [
+      'Temperature is the one everyday conversion that is not a simple multiplication, because Celsius and Fahrenheit disagree about where zero is as well as how big a degree is.',
+      'This converter handles all four scales at once, shows the formula it applied, and flags physically impossible values below absolute zero.',
+    ],
+  },
+  {
+    id: 'area-converter',
+    name: 'Area Converter',
+    description: 'Convert square metres, acres, hectares, square feet and more.',
+    category: 'converter',
+    icon: 'square',
+    keywords: ['square feet', 'acre', 'hectare', 'land', 'sq m', 'plot'],
+    added: '2026-01-24',
+    faqs: [
+      { q: 'How big is an acre?', a: '4046.86 square metres, historically the area one team of oxen could plough in a day.' },
+      { q: 'Acre or hectare?', a: 'A hectare is 10,000 square metres, about 2.47 acres. Hectares are the metric standard for land area.' },
+      { q: 'Are regional units included?', a: 'Yes - square yard (gaj), bigha-scale units vary regionally so the standard international units are provided alongside them.' },
+    ],
+    about: [
+      'Property listings, agriculture and construction each favour a different area unit, and the same plot can be quoted in square feet, square yards, acres or hectares depending on who is selling it.',
+      'This converter translates between every common area unit at once so you can compare listings on equal terms.',
+    ],
+  },
+  {
+    id: 'speed-converter',
+    name: 'Speed Converter',
+    description: 'Convert km/h, mph, m/s, knots and mach.',
+    category: 'converter',
+    icon: 'gauge',
+    keywords: ['kmh to mph', 'knots', 'metres per second', 'velocity', 'pace'],
+    added: '2026-01-24',
+    faqs: [
+      { q: 'What is a knot?', a: 'One nautical mile per hour, roughly 1.852 km/h, used in marine and aviation contexts.' },
+      { q: 'Is mach a fixed speed?', a: 'No. It is the ratio to the local speed of sound, which varies with temperature. The converter uses the standard sea-level value of 1225 km/h.' },
+      { q: 'How do I convert running pace?', a: 'Pace is the inverse of speed. The tool shows minutes per kilometre and per mile alongside the speed units.' },
+    ],
+    about: [
+      'Speed limits, weather reports, running apps and flight trackers all use different units, and the mental arithmetic for converting between them is rarely accurate enough to rely on.',
+      'This converter handles every common speed unit at once and adds running pace in minutes per kilometre and per mile.',
+    ],
+  },
+  {
+    id: 'volume-converter',
+    name: 'Volume Converter',
+    description: 'Convert litres, gallons, cups, pints and cubic units.',
+    category: 'converter',
+    icon: 'beaker',
+    keywords: ['litre', 'gallon', 'ml', 'cup', 'tablespoon', 'cooking'],
+    added: '2026-01-24',
+    faqs: [
+      { q: 'US or imperial gallon?', a: 'Both. A US gallon is 3.785 litres and an imperial gallon is 4.546 litres, a difference of about 20 percent.' },
+      { q: 'Is a cup a standard measure?', a: 'A US legal cup is 240 ml, a US customary cup is about 236.6 ml, and a metric cup is 250 ml. All three are listed.' },
+      { q: 'Can I convert to weight?', a: 'Not directly - that depends on the density of the substance. Volume and mass are different quantities.' },
+    ],
+    about: [
+      'Volume has more conflicting definitions than any other everyday unit family, and recipes are where it bites: a US pint and an imperial pint differ by a fifth.',
+      'This converter is explicit about which definition it uses for every unit, covering metric, US customary, imperial and cubic measures side by side.',
+    ],
+  },
+  {
+    id: 'currency-converter',
+    name: 'Currency Converter',
+    description: 'Convert currencies offline using editable static reference rates.',
+    category: 'converter',
+    icon: 'currency',
+    keywords: ['exchange rate', 'usd', 'eur', 'inr', 'forex', 'money'],
+    added: '2026-03-15',
+    faqs: [
+      { q: 'Are these live rates?', a: 'No. QuickTools has no backend, so the app ships with static reference rates. They are indicative only and you can edit any rate.' },
+      { q: 'How do I use my own rate?', a: 'Type the rate you were quoted into the rate field and every conversion recalculates from it.' },
+      { q: 'Why not fetch live rates?', a: 'That would require calling an external service, which conflicts with the promise that nothing you enter leaves your browser.' },
+    ],
+    about: [
+      'This converter is deliberately offline. It ships with a snapshot of reference exchange rates so it keeps working with no network and sends nothing anywhere.',
+      'Use it for quick approximations and travel budgeting, and override the rate with the one your bank actually quoted when accuracy matters. The date of the bundled snapshot is shown next to the result.',
+    ],
+  },
+];

@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>QuickTools.in — Free Browser-Based Tools</title>
+    <base href="/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="A fast, private collection of free online utilities for developers, designers and writers. Everything runs in your browser — nothing is uploaded."
+    />
+    <meta name="theme-color" content="#ffffff" />
+
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <link rel="icon" type="image/svg+xml" href="icon.svg" />
+    <link rel="apple-touch-icon" href="icons/icon-180.png" />
+    <link rel="manifest" href="manifest.webmanifest" />
+
+    <!--
+      Loaded as an ordinary stylesheet rather than with the `media="print"
+      onload` swap trick: that relies on an inline event handler, which the
+      production Content-Security-Policy blocks, leaving the font permanently
+      inactive. `display=swap` keeps text visible while the font downloads.
+    -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+    />
+
+    <!--
+      Apply the stored theme before first paint. Without this the page renders
+      light and then flips to dark once Angular boots, which is very visible.
+    -->
+    <script>
+      (function () {
+        try {
+          var pref = localStorage.getItem('qt.theme') || 'system';
+          var dark =
+            pref === 'dark' ||
+            (pref === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+          var root = document.documentElement;
+          root.classList.toggle('dark', dark);
+          root.style.colorScheme = dark ? 'dark' : 'light';
+          var meta = document.querySelector('meta[name="theme-color"]');
+          if (meta) meta.setAttribute('content', dark ? '#09090b' : '#ffffff');
+        } catch (e) {
+          /* Storage blocked — fall back to the light default. */
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <app-root></app-root>
+    <noscript>
+      <div style="padding: 2rem; font-family: system-ui, sans-serif">
+        <h1>JavaScript is required</h1>
+        <p>
+          QuickTools runs entirely in your browser, so it needs JavaScript enabled. No data is ever
+          sent to a server.
+        </p>
+      </div>
+    </noscript>
+  </body>
+</html>

@@ -1,0 +1,53 @@
+{
+  "name": "quicktools",
+  "version": "1.0.0",
+  "description": "QuickTools.in \u2014 a collection of free, fully client-side browser utilities.",
+  "private": true,
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve",
+    "build": "ng build && npm run finalize",
+    "finalize": "npm run generate:sitemap && npm run prepare:cloudflare",
+    "preview": "npm run build && wrangler pages dev",
+    "deploy": "npm run build && wrangler pages deploy",
+    "watch": "ng build --watch --configuration development",
+    "test": "ng test",
+    "lint": "ng lint",
+    "generate:icons": "node scripts/generate-icons.mjs",
+    "generate:sitemap": "node scripts/generate-sitemap.mjs",
+    "prepare:cloudflare": "node scripts/prepare-cloudflare.mjs"
+  },
+  "dependencies": {
+    "@angular/cdk": "^21.0.0",
+    "@angular/common": "^21.0.0",
+    "@angular/compiler": "^21.0.0",
+    "@angular/core": "^21.0.0",
+    "@angular/forms": "^21.0.0",
+    "@angular/platform-browser": "^21.0.0",
+    "@angular/platform-server": "^21.0.0",
+    "@angular/router": "^21.0.0",
+    "@angular/ssr": "^21.0.0",
+    "pdf-lib": "^1.17.1",
+    "rxjs": "~7.8.0",
+    "tslib": "^2.3.0"
+  },
+  "devDependencies": {
+    "@angular/build": "^21.0.0",
+    "@angular/cli": "^21.0.0",
+    "@angular/compiler-cli": "^21.0.0",
+    "@tailwindcss/postcss": "^4.1.12",
+    "@types/node": "^20.17.19",
+    "angular-eslint": "21.1.0",
+    "eslint": "^9.39.1",
+    "jsdom": "^27.0.0",
+    "postcss": "^8.5.3",
+    "tailwindcss": "^4.1.12",
+    "typescript": "~5.9.2",
+    "typescript-eslint": "8.47.0",
+    "vitest": "^4.0.0",
+    "wrangler": "^4.127.1"
+  },
+  "engines": {
+    "node": ">=20.19.0"
+  }
+}
