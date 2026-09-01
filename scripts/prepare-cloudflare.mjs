@@ -1,6 +1,6 @@
 /**
  * Post-build step that turns the Angular static output into a
- * deploy-ready Cloudflare Pages artifact.
+ * deploy-ready Cloudflare artifact.
  *
  * It does two things that cannot be written by hand:
  *
@@ -8,8 +8,8 @@
  *    `script-src` lists the SHA-256 hash of every inline script Angular
  *    actually emitted. Those hashes change whenever Angular or the app
  *    changes, so hardcoding them would silently break the site.
- * 2. Copies the prerendered /404 page to `404.html`, which Cloudflare Pages
- *    serves (with a real 404 status) for any unmatched path.
+ * 2. Copies the prerendered /404 page to `404.html`, which Cloudflare serves
+ *    (with a real 404 status) for any unmatched path.
  */
 import { createHash } from 'node:crypto';
 import { copyFileSync, existsSync, readFileSync, readdirSync, statSync, writeFileSync } from 'node:fs';

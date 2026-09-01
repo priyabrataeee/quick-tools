@@ -505,7 +505,7 @@ export const routes: Routes = [
       },
 
       // An explicit /404 route exists so the static build produces a page that
-      // Cloudflare Pages can serve as 404.html with a real 404 status. The
+      // Cloudflare can serve as 404.html with a real 404 status. The
       // wildcard below handles the same component for client-side navigation.
       {
         path: '404',

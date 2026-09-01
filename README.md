@@ -18,7 +18,7 @@ whole site keeps working offline once it has been visited.
 | Rendering    | Angular SSR used as a **static site generator** (all routes prerendered) |
 | Icons        | Hand-drawn inline SVG set — no icon font, no network request         |
 | PDF          | `pdf-lib`, loaded lazily and only on the PDF tool pages              |
-| Deployment   | Plain static files — Cloudflare Pages, Netlify, Vercel, S3, anything |
+| Deployment   | Plain static files — Cloudflare Workers, Netlify, Vercel, S3, anything |
 
 There is **no runtime dependency on a server**. `dist/app/browser` is a folder of static HTML,
 CSS, JS and images.
@@ -43,7 +43,11 @@ npm run generate:sitemap   # regenerate sitemap.xml from the built output
 
 ---
 
-## Deploying to Cloudflare Pages
+## Deploying to Cloudflare
+
+This deploys as a **Workers project with static assets** (`wrangler deploy`), not a Pages project.
+Cloudflare now steers new projects to Workers, and the two use different config keys — mixing them
+is what causes `Missing entry-point to Worker script or to assets directory`.
 
 ### 1. Set your domain
 
@@ -56,37 +60,46 @@ export const SITE_URL = 'https://your-domain.com';
 ```
 
 For a throwaway preview you can override it at build time instead:
-`SITE_URL=https://quicktools.pages.dev npm run build`.
+`SITE_URL=https://quicktools.workers.dev npm run build`.
 
-### 2. Preview exactly what Pages will serve
+### 2. Preview exactly what Cloudflare will serve
 
 ```bash
 npm run preview
 ```
 
-This builds and runs Wrangler's Pages emulator on `http://localhost:8788`, honouring `_headers`,
-`404.html` and the service worker — so the CSP and caching behaviour you see locally is the
-behaviour you get in production.
+This builds and runs `wrangler dev` on `http://localhost:8788` using the same asset server as
+production — so `_headers`, the 404 status, trailing-slash redirects, the CSP and the service
+worker all behave locally exactly as they will once deployed.
 
 ### 3. Deploy
 
-Either connect the Git repository in the Cloudflare dashboard:
-
-| Setting              | Value              |
-| -------------------- | ------------------ |
-| Build command        | `npm run build`    |
-| Build output directory | `dist/app/browser` |
-| Node version         | 20 or newer (`.node-version` pins 22) |
-
-…or push directly from your machine:
+From your machine:
 
 ```bash
 npx wrangler login
 npm run deploy
 ```
 
-`wrangler.toml` already sets the project name and output directory. Change `name` if your Pages
-project is called something else.
+Or connect the Git repository in the Cloudflare dashboard:
+
+| Setting        | Value                                 |
+| -------------- | ------------------------------------- |
+| Build command  | `npm run build`                       |
+| Deploy command | `npx wrangler deploy`                 |
+| Node version   | 20 or newer (`.node-version` pins 22) |
+
+There is no "build output directory" setting to fill in — `wrangler.toml` points at
+`dist/app/browser` via `[assets] directory`. Change `name` in that file if your Worker is called
+something else.
+
+`wrangler.toml` has no `main`, which makes this an **assets-only Worker**: Cloudflare serves the
+files directly with no script in the request path.
+
+> **If you would rather use Pages**, swap `[assets]` for
+> `pages_build_output_dir = "dist/app/browser"` in `wrangler.toml`, and set the deploy command to
+> `npx wrangler pages deploy`. Both hosts behave identically for this site; Workers is the default
+> for new projects.
 
 ### What the build generates
 
@@ -95,9 +108,10 @@ hand:
 
 - **`_headers`** — security headers plus a Content-Security-Policy whose `script-src` lists the
   SHA-256 hash of every inline script Angular actually emitted. These hashes change with every
-  Angular or app change, so they are recomputed from the build output on each run.
-- **`404.html`** — a copy of the prerendered `/404` page, which Pages serves with a real 404 status
-  for unmatched paths.
+  Angular or app change, so they are recomputed from the build output on each run. (Workers Static
+  Assets supports `_headers`; `wrangler dev` logs how many rules it parsed.)
+- **`404.html`** — a copy of the prerendered `/404` page. `not_found_handling = "404-page"` makes
+  Cloudflare serve it with a real 404 status for unmatched paths.
 - **`sw.js` precache manifest** — the content-hashed bundle filenames, injected into the service
   worker so a first-time visitor can later open *any* tool offline, not just ones they have already
   visited.
@@ -105,11 +119,11 @@ hand:
 
 ### A note on trailing slashes
 
-The static build writes each route as `<path>/index.html`. Cloudflare Pages serves that at
-`<path>/` and 308-redirects `<path>` to it. Canonical tags, `og:url`, JSON-LD and the sitemap
-therefore all use the trailing-slash form, via `canonicalUrl()` in `site.config.ts` — otherwise
-every URL you publish would be a redirect to the real one. If you move to a host with the opposite
-convention, that one function is the only thing to change.
+The static build writes each route as `<path>/index.html`, which is served at `<path>/`. Canonical
+tags, `og:url`, JSON-LD and the sitemap therefore all use the trailing-slash form, via
+`canonicalUrl()` in `site.config.ts` — otherwise every URL you publish would redirect to the real
+one. `html_handling = "force-trailing-slash"` in `wrangler.toml` pins the server to the matching
+convention, so the two can never drift apart.
 
 ### Other static hosts
 

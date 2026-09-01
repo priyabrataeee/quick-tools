@@ -1,11 +1,26 @@
-# Cloudflare Pages project configuration.
+# Cloudflare Workers project, serving the prerendered site as static assets.
 #
-# Deploy with:  npm run build && npx wrangler pages deploy
-# Preview with: npm run preview   (serves the built output exactly as Pages will,
-#                                  honouring _headers and 404.html)
+#   npm run preview   build, then serve locally exactly as Cloudflare will
+#   npm run deploy    build, then `wrangler deploy`
 #
-# `name` must match the Pages project name in your Cloudflare dashboard.
+# There is no `main` entry: this is an assets-only Worker, so Cloudflare serves
+# the files directly with no script in the request path.
+#
+# `name` must match the Worker name in your Cloudflare dashboard.
 
 name = "quicktools"
 compatibility_date = "2026-08-01"
-pages_build_output_dir = "dist/app/browser"
+
+[assets]
+directory = "./dist/app/browser"
+
+# Serve the prerendered /404 page with a real 404 status for unmatched paths.
+# "single-page-application" would return 200 for every URL, which would let
+# search engines index broken links.
+not_found_handling = "404-page"
+
+# Each route is written as `<path>/index.html`, and canonical tags, JSON-LD and
+# the sitemap all use the trailing-slash form (see canonicalUrl() in
+# src/app/core/site.config.ts). Forcing the trailing slash keeps the URL we
+# publish identical to the one that answers with a 200.
+html_handling = "force-trailing-slash"

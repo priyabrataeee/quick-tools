@@ -4,7 +4,7 @@ import { CATEGORIES } from './core/tool.types';
 
 /**
  * Every route is prerendered to static HTML at build time, which is what makes
- * the app deployable to Cloudflare Pages, Netlify or Vercel with no server —
+ * the app deployable to Cloudflare, Netlify or Vercel with no server —
  * and gives crawlers fully rendered markup with its own meta tags.
  */
 export const serverRoutes: ServerRoute[] = [

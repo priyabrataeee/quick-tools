@@ -18,8 +18,8 @@ export const SITE_DESCRIPTION =
 /**
  * Builds the absolute URL that the host actually serves with a 200.
  *
- * The static build writes each route as `<path>/index.html`. Cloudflare Pages
- * serves that at `<path>/` and 308-redirects `<path>` to it, so canonical tags,
+ * The static build writes each route as `<path>/index.html`. The host serves
+ * that at `<path>/` and redirects `<path>` to it, so canonical tags,
  * og:url, JSON-LD and the sitemap all use the trailing-slash form — otherwise
  * every declared URL would be a redirect to the real one.
  */
