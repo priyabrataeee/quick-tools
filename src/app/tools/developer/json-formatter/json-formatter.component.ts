@@ -5,7 +5,7 @@ import { ResultPanelComponent } from '../../../shared/components/result-panel/re
 import { ToolLayoutComponent } from '../../../shared/components/tool-layout/tool-layout.component';
 import { jsonStats, parseJson, sortKeysDeep } from '../lib/json.util';
 
-const SAMPLE = `{"name":"QuickTools","private":true,"tools":[{"id":"json-formatter","tags":["json","format"]}],"version":2}`;
+const SAMPLE = `{"name":"OnDevice Tools","private":true,"tools":[{"id":"json-formatter","tags":["json","format"]}],"version":2}`;
 
 @Component({
   selector: 'app-json-formatter',

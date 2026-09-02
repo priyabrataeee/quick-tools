@@ -6,9 +6,9 @@
  * tags. Set the SITE_URL environment variable to override it for a preview
  * deployment.
  */
-export const SITE_URL = 'https://quicktools.in';
+export const SITE_URL = 'https://ondevice-tools.org';
 
-export const SITE_NAME = 'QuickTools.in';
+export const SITE_NAME = 'OnDevice Tools';
 
 export const SITE_TAGLINE = 'Free browser-based tools that never upload your data';
 

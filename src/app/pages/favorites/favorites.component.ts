@@ -60,7 +60,7 @@ export class FavoritesComponent implements OnInit {
   ngOnInit(): void {
     this.seo.apply({
       title: 'Your Favourite Tools',
-      description: 'The QuickTools utilities you have saved, stored locally in your own browser.',
+      description: 'The OnDevice Tools utilities you have saved, stored locally in your own browser.',
       path: '/favorites',
       keywords: ['favourites', 'saved tools', 'bookmarks'],
     });

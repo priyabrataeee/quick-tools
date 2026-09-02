@@ -1,6 +1,6 @@
 {
-  "name": "QuickTools.in — Free Browser Tools",
-  "short_name": "QuickTools",
+  "name": "OnDevice Tools — Free Browser Tools",
+  "short_name": "OnDevice",
   "description": "A fast, private collection of free online utilities. Everything runs in your browser.",
   "start_url": "/",
   "scope": "/",

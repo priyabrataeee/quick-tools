@@ -1,4 +1,4 @@
-# QuickTools.in
+# OnDevice Tools
 
 A collection of **63 free browser-based utilities** for developers, designers and writers.
 
@@ -60,7 +60,7 @@ export const SITE_URL = 'https://your-domain.com';
 ```
 
 For a throwaway preview you can override it at build time instead:
-`SITE_URL=https://quicktools.workers.dev npm run build`.
+`SITE_URL=https://ondevice-tools.workers.dev npm run build`.
 
 ### 2. Preview exactly what Cloudflare will serve
 

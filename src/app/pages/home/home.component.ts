@@ -180,7 +180,7 @@ import { ToolCardComponent } from '../../shared/components/tool-card/tool-card.c
               <app-icon name="sparkle" class="h-5 w-5 text-brand" />
               Recently added
             </h2>
-            <p class="mb-4 text-sm text-muted">The newest additions to QuickTools.</p>
+            <p class="mb-4 text-sm text-muted">The newest additions to OnDevice Tools.</p>
             <ul class="divide-y divide-line overflow-hidden rounded-2xl border border-line">
               @for (tool of newest(); track tool.id) {
                 <li>
@@ -205,7 +205,7 @@ import { ToolCardComponent } from '../../shared/components/tool-card/tool-card.c
         <section class="prose-qt mx-auto max-w-3xl border-t border-line pt-12">
           <h2>Free online tools that respect your privacy</h2>
           <p>
-            QuickTools.in is a collection of {{ toolCount }} browser-based utilities for developers,
+            OnDevice Tools is a collection of {{ toolCount }} browser-based utilities for developers,
             designers, writers and anyone who needs a quick answer. Every tool runs as JavaScript
             inside your own browser tab. There is no upload step, no queue and no account, because
             there is no server doing the work.
@@ -242,7 +242,7 @@ import { ToolCardComponent } from '../../shared/components/tool-card/tool-card.c
           <h3>Is it really free?</h3>
           <p>
             Yes. There is no paid tier, no usage limit and no sign-up. Because processing happens on
-            your device rather than on rented servers, running QuickTools costs almost nothing.
+            your device rather than on rented servers, running OnDevice Tools costs almost nothing.
           </p>
         </section>
       </div>

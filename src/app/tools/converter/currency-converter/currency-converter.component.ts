@@ -6,7 +6,7 @@ import { formatUnitValue } from '../lib/units';
 /**
  * Static reference rates, quoted per 1 USD.
  *
- * QuickTools has no backend and makes no network calls, so these ship with the
+ * OnDevice Tools has no backend and makes no network calls, so these ship with the
  * app. They are indicative only — the UI says so, shows the snapshot date, and
  * lets the user override any rate.
  */

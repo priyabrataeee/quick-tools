@@ -6,10 +6,22 @@
 # There is no `main` entry: this is an assets-only Worker, so Cloudflare serves
 # the files directly with no script in the request path.
 #
-# `name` must match the Worker name in your Cloudflare dashboard.
+# `name` must match the Worker name in your Cloudflare dashboard. It is kept as
+# "quicktools" deliberately — renaming it makes `wrangler deploy` create a new
+# Worker, leaving any attached custom domain pointing at the old one.
 
 name = "quicktools"
 compatibility_date = "2026-08-01"
+
+# Custom domains can be attached in the dashboard (they persist across deploys),
+# or declared here so they live in version control. Uncomment ONLY once the zone
+# is active in your Cloudflare account — `wrangler deploy` fails outright if it
+# is asked to bind a domain Cloudflare does not yet serve DNS for.
+#
+# routes = [
+#   { pattern = "ondevice-tools.org", custom_domain = true },
+#   { pattern = "www.ondevice-tools.org", custom_domain = true },
+# ]
 
 [assets]
 directory = "./dist/app/browser"

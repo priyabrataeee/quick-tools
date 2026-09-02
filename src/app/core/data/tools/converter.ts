@@ -120,7 +120,7 @@ export const CONVERTER_TOOLS: Tool[] = [
     keywords: ['exchange rate', 'usd', 'eur', 'inr', 'forex', 'money'],
     added: '2026-03-15',
     faqs: [
-      { q: 'Are these live rates?', a: 'No. QuickTools has no backend, so the app ships with static reference rates. They are indicative only and you can edit any rate.' },
+      { q: 'Are these live rates?', a: 'No. OnDevice Tools has no backend, so the app ships with static reference rates. They are indicative only and you can edit any rate.' },
       { q: 'How do I use my own rate?', a: 'Type the rate you were quoted into the rate field and every conversion recalculates from it.' },
       { q: 'Why not fetch live rates?', a: 'That would require calling an external service, which conflicts with the promise that nothing you enter leaves your browser.' },
     ],

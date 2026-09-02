@@ -39,7 +39,7 @@ import { ToastContainerComponent } from '../../shared/components/toast/toast-con
               <app-icon name="bolt" class="h-4.5 w-4.5" />
             </span>
             <span class="text-lg font-bold tracking-tight">
-              QuickTools<span class="text-brand">.in</span>
+              OnDevice <span class="text-brand">Tools</span>
             </span>
           </a>
 
@@ -125,7 +125,7 @@ import { ToastContainerComponent } from '../../shared/components/toast/toast-con
                   <app-icon name="bolt" class="h-4.5 w-4.5" />
                 </span>
                 <span class="text-lg font-bold tracking-tight">
-                  QuickTools<span class="text-brand">.in</span>
+                  OnDevice <span class="text-brand">Tools</span>
                 </span>
               </a>
               <p class="mt-3 max-w-sm text-sm leading-relaxed text-muted">
@@ -159,7 +159,7 @@ import { ToastContainerComponent } from '../../shared/components/toast/toast-con
           <div
             class="mt-10 flex flex-col items-center justify-between gap-3 border-t border-line pt-6 text-sm text-faint sm:flex-row"
           >
-            <p>© {{ year }} QuickTools.in — free forever, no account required.</p>
+            <p>© {{ year }} OnDevice Tools — free forever, no account required.</p>
             <p class="flex items-center gap-1.5">
               <app-icon name="lock" class="h-3.5 w-3.5" />
               100% client-side processing

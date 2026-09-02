@@ -10,13 +10,13 @@ import { SeoService } from '../../core/seo.service';
     <div class="mx-auto max-w-3xl px-4 py-12 sm:px-6 md:py-16">
       <h1 class="text-3xl font-bold tracking-tight md:text-4xl">Privacy</h1>
       <p class="mt-3 text-lg text-muted">
-        The short version: QuickTools has no backend, so there is nowhere for your data to go.
+        The short version: OnDevice Tools has no backend, so there is nowhere for your data to go.
       </p>
 
       <div class="prose-qt mt-8">
         <h2>What we collect</h2>
         <p>
-          Nothing. QuickTools is a static site. There is no account system, no analytics script, no
+          Nothing. OnDevice Tools is a static site. There is no account system, no analytics script, no
           advertising network and no server-side processing of anything you type, paste or upload.
         </p>
 
@@ -46,7 +46,7 @@ import { SeoService } from '../../core/seo.service';
         <p>
           The site loads its web font from Google Fonts. If you would rather avoid that request
           entirely, blocking it changes nothing except the typeface. Once the service worker has
-          cached the app, QuickTools works fully offline.
+          cached the app, OnDevice Tools works fully offline.
         </p>
 
         <h2>Contact</h2>
@@ -66,7 +66,7 @@ export class PrivacyComponent implements OnInit {
     this.seo.apply({
       title: 'Privacy',
       description:
-        'QuickTools has no backend and collects nothing. Every tool runs in your browser and your files never leave your device.',
+        'OnDevice Tools has no backend and collects nothing. Every tool runs in your browser and your files never leave your device.',
       path: '/privacy',
       keywords: ['privacy', 'no tracking', 'client-side', 'data protection'],
     });

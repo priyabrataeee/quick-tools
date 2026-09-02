@@ -153,7 +153,7 @@ const polygon = (points) => (px, py) => {
 const mix = (a, b, t) => a.map((v, i) => Math.round(v + (b[i] - v) * t));
 
 /**
- * The QuickTools mark: a solid bolt.
+ * The OnDevice Tools mark: a solid bolt.
  *
  * A filled silhouette is the only thing that survives a 16px favicon — the
  * earlier outlined wrench collapsed into an unreadable blob at that size. The
@@ -273,7 +273,7 @@ function makeOgImage() {
   surface.fill(() => -1, background);
 
   drawMark(surface, 96, 150, 200, WHITE);
-  drawText(surface, 'QUICKTOOLS.IN', 96, 380, 11, WHITE);
+  drawText(surface, 'ONDEVICE TOOLS', 96, 380, 11, WHITE);
   drawText(surface, 'FREE BROWSER TOOLS', 96, 470, 6, [224, 222, 255]);
   drawText(surface, 'NOTHING YOU TYPE LEAVES THIS PAGE', 96, 530, 4, [199, 195, 255]);
 

@@ -15,7 +15,7 @@ import { ToolCardComponent } from '../../shared/components/tool-card/tool-card.c
       <header class="animate-rise mb-8">
         <h1 class="text-3xl font-bold tracking-tight md:text-4xl">All tools</h1>
         <p class="mt-2 max-w-2xl text-lg text-muted">
-          Every one of the {{ total }} QuickTools utilities, filtered live. Nothing you type here
+          Every one of the {{ total }} OnDevice Tools utilities, filtered live. Nothing you type here
           leaves your browser.
         </p>
       </header>
@@ -104,7 +104,7 @@ export class AllToolsComponent implements OnInit {
   ngOnInit(): void {
     this.seo.apply({
       title: `All ${this.total} Free Online Tools`,
-      description: `Browse all ${this.total} free QuickTools utilities — developer, text, image, PDF, CSS, colour, calculator, converter and date tools that run entirely in your browser.`,
+      description: `Browse all ${this.total} free OnDevice Tools utilities — developer, text, image, PDF, CSS, colour, calculator, converter and date tools that run entirely in your browser.`,
       path: '/tools',
       keywords: ['all tools', 'free online tools', 'browser utilities', 'tool directory'],
     });

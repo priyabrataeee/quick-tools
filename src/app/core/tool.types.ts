@@ -1,5 +1,5 @@
 /**
- * Shared types for the QuickTools tool registry.
+ * Shared types for the OnDevice Tools tool registry.
  *
  * Every tool in the app is described once, here, and that single description
  * drives the router, the search palette, the SEO/JSON-LD tags, the FAQ block

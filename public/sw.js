@@ -1,5 +1,5 @@
 /**
- * QuickTools service worker.
+ * OnDevice Tools service worker.
  *
  * The precache list and version are injected at build time by
  * `scripts/prepare-cloudflare.mjs`, which knows the content-hashed filenames

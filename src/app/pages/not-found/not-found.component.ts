@@ -50,7 +50,7 @@ export class NotFoundComponent implements OnInit {
   ngOnInit(): void {
     this.seo.apply({
       title: 'Page Not Found',
-      description: 'The page you were looking for does not exist. Browse all free QuickTools utilities instead.',
+      description: 'The page you were looking for does not exist. Browse all free OnDevice Tools utilities instead.',
       path: '/404',
     });
   }

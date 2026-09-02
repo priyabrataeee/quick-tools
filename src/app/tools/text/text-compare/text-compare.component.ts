@@ -11,14 +11,14 @@ const MAX_VISIBLE_ROWS = 800;
 const SAMPLE_LEFT = `# Deployment notes
 Run the build with npm run build.
 The output goes to dist/app/browser.
-Deploy with wrangler pages deploy.
+Deploy with wrangler deploy.
 Remember to set the API key.
 Check the logs afterwards.`;
 
 const SAMPLE_RIGHT = `# Deployment notes
 Run the build with npm run build.
 The output goes to dist/app/browser.
-Deploy with wrangler pages deploy.
+Deploy with wrangler deploy.
 No API key is needed — the app has no backend.
 Check the logs afterwards.
 Tag the release once it is live.`;

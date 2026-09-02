@@ -5,10 +5,10 @@ import { ToolLayoutComponent } from '../../../shared/components/tool-layout/tool
 import { YamlError, parseYaml, toYaml } from '../lib/yaml';
 
 const SAMPLE_YAML = `# Deployment configuration
-name: quicktools
+name: ondevice-tools
 replicas: 3
 image:
-  repository: ghcr.io/quicktools/web
+  repository: ghcr.io/ondevice-tools/web
   tag: "2.4.0"
   pullPolicy: IfNotPresent
 env:
