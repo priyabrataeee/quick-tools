@@ -3,8 +3,14 @@
 A collection of **63 free browser-based utilities** for developers, designers and writers.
 
 Every tool runs as JavaScript inside the visitor's own browser. There is no backend, no upload
-step, no account and no tracking — which is why results are instant, files stay private, and the
-whole site keeps working offline once it has been visited.
+step and no account — which is why results are instant, files stay private, and the whole site
+keeps working offline once it has been visited.
+
+The site is funded by advertising, so page views are measured and ad cookies are set. The content
+you put into a tool is a separate matter: it is never transmitted, because there is no server that
+could receive it. `src/app/pages/privacy/privacy.component.ts` states that distinction in the terms
+a visitor sees, and it should stay accurate — if the site starts doing something new, that page
+changes first.
 
 ---
 

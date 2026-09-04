@@ -5,12 +5,13 @@ import { SITE_DESCRIPTION } from '../../core/site.config';
 import { ToolService } from '../../core/tool.service';
 import { CategoryCardComponent } from '../../shared/components/category-card/category-card.component';
 import { IconComponent } from '../../shared/components/icon/icon.component';
+import { SupportCardComponent } from '../../shared/components/support-card/support-card.component';
 import { ToolCardComponent } from '../../shared/components/tool-card/tool-card.component';
 
 @Component({
   selector: 'app-home',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, IconComponent, ToolCardComponent, CategoryCardComponent],
+  imports: [RouterLink, IconComponent, ToolCardComponent, CategoryCardComponent, SupportCardComponent],
   template: `
     <!-- Hero -->
     <section class="relative overflow-hidden">
@@ -35,7 +36,7 @@ import { ToolCardComponent } from '../../shared/components/tool-card/tool-card.c
 
         <p class="animate-rise mx-auto mt-5 max-w-2xl text-lg leading-relaxed text-balance text-muted">
           Formatters, converters, calculators and image tools that work instantly and privately.
-          No sign-up, no server, no tracking.
+          No sign-up, no upload, no waiting.
         </p>
 
         <!-- Live search -->
@@ -241,10 +242,14 @@ import { ToolCardComponent } from '../../shared/components/tool-card/tool-card.c
           </ul>
           <h3>Is it really free?</h3>
           <p>
-            Yes. There is no paid tier, no usage limit and no sign-up. Because processing happens on
-            your device rather than on rented servers, running OnDevice Tools costs almost nothing.
+            Yes — there is no paid tier, no usage limit and no sign-up. Because the work happens on
+            your device rather than on rented servers, running OnDevice Tools costs very little, and
+            advertising covers the rest. Ads are display slots on the page: they never see the file
+            you opened or the result a tool produced, because that content is never sent anywhere.
           </p>
         </section>
+
+        <app-support-card heading="Keep OnDevice Tools free" />
       </div>
     }
   `,

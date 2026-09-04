@@ -1,7 +1,14 @@
 import { DOCUMENT } from '@angular/common';
 import { Injectable, inject } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
-import { SITE_DESCRIPTION, SITE_NAME, SITE_OG_IMAGE, SITE_URL, canonicalUrl } from './site.config';
+import {
+  SITE_AUTHOR,
+  SITE_DESCRIPTION,
+  SITE_NAME,
+  SITE_OG_IMAGE,
+  SITE_URL,
+  canonicalUrl,
+} from './site.config';
 import { Tool } from './tool.types';
 
 export interface SeoConfig {
@@ -14,6 +21,11 @@ export interface SeoConfig {
   image?: string;
   /** Extra JSON-LD graph nodes to emit alongside the defaults. */
   structuredData?: Record<string, unknown>[];
+  /**
+   * Keep the page out of the index. Used for pages whose content is per-browser
+   * and therefore meaningless to a crawler, e.g. /favorites.
+   */
+  noindex?: boolean;
 }
 
 const LD_ATTR = 'data-qt-ld';
@@ -49,8 +61,19 @@ export class SeoService {
     this.meta.updateTag({ name: 'twitter:description', content: config.description });
     this.meta.updateTag({ name: 'twitter:image', content: image });
 
+    // Reset on every navigation: this is a single-page app, so a tag left over
+    // from the previous route would silently apply to the next one.
+    this.meta.updateTag({
+      name: 'robots',
+      content: config.noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large',
+    });
+
     this.setCanonical(url);
-    this.setStructuredData([this.websiteNode(), ...(config.structuredData ?? [])]);
+    this.setStructuredData([
+      this.organizationNode(),
+      this.websiteNode(),
+      ...(config.structuredData ?? []),
+    ]);
   }
 
   /** Convenience wrapper that derives every tag from a registry entry. */
@@ -59,9 +82,17 @@ export class SeoService {
     const url = canonicalUrl(path);
 
     this.apply({
-      title: `${tool.name} — Free Online Tool`,
+      title: `${tool.name} — Free, Nothing Uploaded`,
       description: tool.description,
-      keywords: [tool.name.toLowerCase(), ...tool.keywords, 'free', 'online', 'browser'],
+      keywords: [
+        tool.name.toLowerCase(),
+        ...tool.keywords,
+        'free',
+        'online',
+        'offline',
+        'no upload',
+        'in browser',
+      ],
       path,
       structuredData: [
         {
@@ -73,6 +104,8 @@ export class SeoService {
           operatingSystem: 'Any',
           browserRequirements: 'Requires a modern web browser with JavaScript enabled',
           offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+          isAccessibleForFree: true,
+          publisher: { '@id': `${SITE_URL}/#organization` },
         },
         {
           '@type': 'BreadcrumbList',
@@ -103,11 +136,31 @@ export class SeoService {
     });
   }
 
+  /**
+   * Publisher identity, referenced by @id from the other nodes.
+   *
+   * Search engines use this to attribute every page to one named entity, which
+   * is also what an ad network's site review looks for.
+   */
+  private organizationNode(): Record<string, unknown> {
+    return {
+      '@type': 'Organization',
+      '@id': `${SITE_URL}/#organization`,
+      name: SITE_NAME,
+      url: canonicalUrl('/'),
+      logo: { '@type': 'ImageObject', url: `${SITE_URL}/icons/icon-512.png` },
+      description: SITE_DESCRIPTION,
+      founder: { '@type': 'Person', name: SITE_AUTHOR },
+    };
+  }
+
   private websiteNode(): Record<string, unknown> {
     return {
       '@type': 'WebSite',
+      '@id': `${SITE_URL}/#website`,
       name: SITE_NAME,
       url: canonicalUrl('/'),
+      publisher: { '@id': `${SITE_URL}/#organization` },
       description: SITE_DESCRIPTION,
       potentialAction: {
         '@type': 'SearchAction',

@@ -63,6 +63,11 @@ export class FavoritesComponent implements OnInit {
       description: 'The OnDevice Tools utilities you have saved, stored locally in your own browser.',
       path: '/favorites',
       keywords: ['favourites', 'saved tools', 'bookmarks'],
+      // Per-browser content: identical empty shell for every crawler, so it is
+      // noindex rather than robots.txt-disallowed. A disallowed URL can still be
+      // indexed from an inbound link precisely because the crawler is forbidden
+      // from fetching it and seeing this directive.
+      noindex: true,
     });
   }
 }

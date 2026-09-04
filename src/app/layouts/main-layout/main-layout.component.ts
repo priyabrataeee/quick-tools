@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { CommandPaletteService } from '../../core/command-palette.service';
+import { DONATION_URL } from '../../core/site.config';
 import { ThemeService } from '../../core/theme.service';
 import { ToolService } from '../../core/tool.service';
 import { CommandPaletteComponent } from '../../shared/components/command-palette/command-palette.component';
@@ -76,6 +77,26 @@ import { ToastContainerComponent } from '../../shared/components/toast/toast-con
               <app-icon name="search" class="h-4.5 w-4.5" />
             </button>
 
+<a
+              [href]="donationUrl"
+              target="_blank"
+              rel="noopener nofollow"
+              class="hidden items-center gap-2 rounded-lg bg-amber-400 px-3 py-1.5 text-sm font-semibold text-amber-950 transition-colors hover:bg-amber-300 sm:inline-flex"
+            >
+              <app-icon name="coffee" class="h-4 w-4" />
+              Buy me a coffee
+            </a>
+
+            <a
+              [href]="donationUrl"
+              target="_blank"
+              rel="noopener nofollow"
+              class="flex h-9 w-9 items-center justify-center rounded-lg bg-amber-400 text-amber-950 transition-colors hover:bg-amber-300 sm:hidden"
+              aria-label="Buy me a coffee"
+            >
+              <app-icon name="coffee" class="h-4.5 w-4.5" />
+            </a>
+
             <button
               type="button"
               class="btn btn-ghost h-9 w-9 !p-0"
@@ -108,6 +129,16 @@ import { ToastContainerComponent } from '../../shared/components/toast/toast-con
                 {{ link.label }}
               </a>
             }
+            <a
+              [href]="donationUrl"
+              target="_blank"
+              rel="noopener nofollow"
+              (click)="mobileOpen.set(false)"
+              class="mt-1 flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold text-amber-700 hover:bg-surface-strong dark:text-amber-400"
+            >
+              <app-icon name="coffee" class="h-4 w-4" />
+              Buy me a coffee
+            </a>
           </nav>
         }
       </header>
@@ -130,7 +161,7 @@ import { ToastContainerComponent } from '../../shared/components/toast/toast-con
               </a>
               <p class="mt-3 max-w-sm text-sm leading-relaxed text-muted">
                 {{ toolCount }} free utilities that run entirely in your browser. No sign-up, no
-                uploads, no tracking — your data never leaves your device.
+                uploads, no limits — your files never leave your device.
               </p>
             </div>
 
@@ -143,11 +174,21 @@ import { ToastContainerComponent } from '../../shared/components/toast/toast-con
                   <ul class="space-y-2">
                     @for (item of group.items; track item.path) {
                       <li>
-                        <a
-                          [routerLink]="item.path"
-                          class="text-sm text-muted transition-colors hover:text-fg"
-                          >{{ item.label }}</a
-                        >
+                        @if (item.external) {
+                          <a
+                            [href]="item.path"
+                            target="_blank"
+                            rel="noopener nofollow"
+                            class="text-sm text-muted transition-colors hover:text-fg"
+                            >{{ item.label }}</a
+                          >
+                        } @else {
+                          <a
+                            [routerLink]="item.path"
+                            class="text-sm text-muted transition-colors hover:text-fg"
+                            >{{ item.label }}</a
+                          >
+                        }
                       </li>
                     }
                   </ul>
@@ -175,6 +216,7 @@ export class MainLayoutComponent {
   protected readonly palette = inject(CommandPaletteService);
   private readonly toolService = inject(ToolService);
 
+  protected readonly donationUrl = DONATION_URL;
   protected readonly mobileOpen = signal(false);
   protected readonly year = new Date().getFullYear();
   protected readonly toolCount = this.toolService.tools().length;
@@ -192,18 +234,26 @@ export class MainLayoutComponent {
     return [
       {
         title: 'Categories',
-        items: categories.slice(0, perColumn).map((c) => ({ path: `/category/${c.id}`, label: c.name })),
+        items: categories
+          .slice(0, perColumn)
+          .map((c) => ({ path: `/category/${c.id}`, label: c.name, external: false })),
       },
       {
         title: 'More categories',
-        items: categories.slice(perColumn).map((c) => ({ path: `/category/${c.id}`, label: c.name })),
+        items: categories
+          .slice(perColumn)
+          .map((c) => ({ path: `/category/${c.id}`, label: c.name, external: false })),
       },
       {
         title: 'Site',
         items: [
-          { path: '/tools', label: 'All tools' },
-          { path: '/favorites', label: 'Favourites' },
-          { path: '/privacy', label: 'Privacy' },
+          { path: '/tools', label: 'All tools', external: false },
+          { path: '/favorites', label: 'Favourites', external: false },
+          { path: '/about', label: 'About', external: false },
+          { path: '/contact', label: 'Contact', external: false },
+          { path: '/privacy', label: 'Privacy', external: false },
+          { path: '/terms', label: 'Terms', external: false },
+          { path: DONATION_URL, label: 'Buy me a coffee', external: true },
         ],
       },
     ];

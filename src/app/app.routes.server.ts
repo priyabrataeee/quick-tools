@@ -24,7 +24,10 @@ export const PRERENDERED_PATHS: string[] = [
   '/',
   '/tools',
   '/favorites',
+  '/about',
+  '/contact',
   '/privacy',
+  '/terms',
   ...CATEGORIES.map((category) => `/category/${category.id}`),
   ...TOOLS.map((tool) => `/tools/${tool.id}`),
 ];

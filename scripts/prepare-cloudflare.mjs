@@ -10,6 +10,10 @@
  *    changes, so hardcoding them would silently break the site.
  * 2. Copies the prerendered /404 page to `404.html`, which Cloudflare serves
  *    (with a real 404 status) for any unmatched path.
+ * 3. Writes `ads.txt` when an AdSense publisher id is configured, and widens
+ *    the CSP to the hosts Google's ad stack needs. Both are driven from
+ *    site.config.ts so the policy can never allow ad hosts on a build that
+ *    is not actually serving ads.
  */
 import { createHash } from 'node:crypto';
 import { copyFileSync, existsSync, readFileSync, readdirSync, statSync, writeFileSync } from 'node:fs';
@@ -18,6 +22,66 @@ import { fileURLToPath } from 'node:url';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const outDir = join(root, 'dist', 'app', 'browser');
+
+// --- Third-party configuration ----------------------------------------------
+
+/**
+ * site.config.ts is the single source of truth for what the app loads, so the
+ * CSP is derived from it rather than maintained in parallel. A build with no
+ * publisher id keeps the strict, hash-only policy it has today.
+ */
+const siteConfig = readFileSync(join(root, 'src', 'app', 'core', 'site.config.ts'), 'utf8');
+
+function readConst(name) {
+  // Deliberately free of backslash escapes: a lone escape inside a template
+  // literal collapses before the RegExp constructor ever sees it.
+  const match = new RegExp(`export const ${name}[ ]*=[ ]*['"]([^'"]*)['"]`).exec(siteConfig);
+  return match ? match[1] : '';
+}
+
+const adsenseClient = readConst('ADSENSE_CLIENT');
+const adsEnabled = adsenseClient.startsWith('ca-pub-');
+const analyticsToken = readConst('CF_ANALYTICS_TOKEN');
+const analyticsEnabled = analyticsToken.length > 0;
+
+/**
+ * Hosts Google's ad stack fetches from. Google does not publish a stable,
+ * exhaustive list, so this covers the documented set: the loader, the ad
+ * server, the creative frames, the consent messaging (CMP) used for EEA
+ * traffic, and the ad-traffic-quality endpoints.
+ */
+const AD_SCRIPT_HOSTS = [
+  'https://pagead2.googlesyndication.com',
+  'https://partner.googleadservices.com',
+  'https://tpc.googlesyndication.com',
+  'https://www.googletagservices.com',
+  'https://adservice.google.com',
+  'https://googleads.g.doubleclick.net',
+  'https://fundingchoicesmessages.google.com',
+  'https://ep2.adtrafficquality.google',
+];
+
+const AD_FRAME_HOSTS = [
+  'https://googleads.g.doubleclick.net',
+  'https://tpc.googlesyndication.com',
+  'https://pagead2.googlesyndication.com',
+  'https://www.google.com',
+  // Google's consent messaging (CMP) renders its dialog in an iframe from this
+  // origin. Without it, EEA and UK visitors never see the consent prompt, and
+  // because consent is never obtained, no ads serve to them at all.
+  'https://fundingchoicesmessages.google.com',
+  'https://ep1.adtrafficquality.google',
+  'https://ep2.adtrafficquality.google',
+];
+
+const AD_CONNECT_HOSTS = [
+  'https://pagead2.googlesyndication.com',
+  'https://googleads.g.doubleclick.net',
+  'https://fundingchoicesmessages.google.com',
+  'https://ep1.adtrafficquality.google',
+  'https://ep2.adtrafficquality.google',
+  'https://csi.gstatic.com',
+];
 
 if (!existsSync(outDir)) {
   console.error(`No build output at ${outDir}. Run "ng build" first.`);
@@ -74,7 +138,20 @@ const scriptSrc = [
   "'self'",
   ...[...hashes].sort(),
   ...(handlerHashes.size ? ["'unsafe-hashes'", ...[...handlerHashes].sort()] : []),
+  ...(adsEnabled ? AD_SCRIPT_HOSTS : []),
+  ...(analyticsEnabled ? ['https://static.cloudflareinsights.com'] : []),
 ].join(' ');
+
+const connectSrc = [
+  "'self'",
+  ...(adsEnabled ? AD_CONNECT_HOSTS : []),
+  ...(analyticsEnabled ? ['https://cloudflareinsights.com'] : []),
+].join(' ');
+
+// Ad creatives are served from a long tail of advertiser CDNs that cannot be
+// enumerated, so the image policy has to widen to https: once ads are on. It
+// stays pinned to 'self' otherwise.
+const imgSrc = adsEnabled ? `'self' data: blob: https:` : `'self' data: blob:`;
 
 const csp = [
   `default-src 'self'`,
@@ -84,10 +161,11 @@ const csp = [
   `style-src 'self' 'unsafe-inline' https://fonts.googleapis.com`,
   `font-src 'self' https://fonts.gstatic.com`,
   // data: for Base64 previews, blob: for canvas and PDF output.
-  `img-src 'self' data: blob:`,
-  `connect-src 'self'`,
+  `img-src ${imgSrc}`,
+  `connect-src ${connectSrc}`,
   `worker-src 'self'`,
   `manifest-src 'self'`,
+  ...(adsEnabled ? [`frame-src ${AD_FRAME_HOSTS.join(' ')}`] : []),
   `object-src 'none'`,
   `base-uri 'self'`,
   `form-action 'none'`,
@@ -96,6 +174,11 @@ const csp = [
 ].join('; ');
 
 // --- _headers ---------------------------------------------------------------
+
+// An ad click-through opens a popup that reads window.opener. 'same-origin'
+// severs that reference and breaks click tracking, so the policy relaxes by
+// exactly one step — and only on builds that actually serve ads.
+const coop = adsEnabled ? 'same-origin-allow-popups' : 'same-origin';
 
 const headers = `# Generated by scripts/prepare-cloudflare.mjs — do not edit by hand.
 # The CSP script-src hashes are recomputed from the build output on every run.
@@ -106,8 +189,9 @@ const headers = `# Generated by scripts/prepare-cloudflare.mjs — do not edit b
   Referrer-Policy: strict-origin-when-cross-origin
   X-Frame-Options: DENY
   Permissions-Policy: accelerometer=(), camera=(), geolocation=(), gyroscope=(), microphone=(), payment=(), usb=()
-  Cross-Origin-Opener-Policy: same-origin
+  Cross-Origin-Opener-Policy: ${coop}
   Cross-Origin-Resource-Policy: same-origin
+  Strict-Transport-Security: max-age=15552000; includeSubDomains
 
 # Fingerprinted build artefacts never change under the same URL.
 /chunk-*.js
@@ -198,6 +282,26 @@ if (existsSync(prerendered404)) {
   process.exit(1);
 }
 
+// --- ads.txt ----------------------------------------------------------------
+
+const NL = String.fromCharCode(10);
+
+// Written only when a publisher id is configured. An ads.txt containing a
+// placeholder is worse than none at all — AdSense reports it as invalid and
+// flags the account rather than simply noting the file is absent.
+if (adsEnabled) {
+  const pubId = adsenseClient.replace(/^ca-/, '');
+  writeFileSync(
+    join(outDir, 'ads.txt'),
+    [
+      '# Authorized Digital Sellers — https://iabtechlab.com/ads-txt/',
+      '# Generated by scripts/prepare-cloudflare.mjs from ADSENSE_CLIENT in site.config.ts.',
+      `google.com, ${pubId}, DIRECT, f08c47fec0942fa0`,
+      '',
+    ].join(NL) + NL,
+  );
+}
+
 console.log(
   `Cloudflare artefacts ready: _headers (${hashes.size} inline-script hashes in CSP), ` +
     `404.html, and sw.js precaching ${precache.length} files (version ${version})`,
@@ -208,3 +312,13 @@ if (handlerSources.size) {
       [...handlerSources].map((h) => JSON.stringify(h)).join(', '),
   );
 }
+console.log(
+  adsEnabled
+    ? `  AdSense ON (${adsenseClient}): ads.txt written, CSP widened to Google ad hosts.`
+    : '  AdSense OFF: no ads.txt, CSP stays hash-only. Set ADSENSE_CLIENT in site.config.ts.',
+);
+console.log(
+  analyticsEnabled
+    ? '  Cloudflare Web Analytics ON: beacon host allowed in CSP.'
+    : '  Cloudflare Web Analytics OFF. Set CF_ANALYTICS_TOKEN in site.config.ts.',
+);

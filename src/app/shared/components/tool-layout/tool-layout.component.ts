@@ -13,8 +13,11 @@ import { ClipboardService } from '../../../core/clipboard.service';
 import { SeoService } from '../../../core/seo.service';
 import { ToastService } from '../../../core/toast.service';
 import { ToolService } from '../../../core/tool.service';
-import { canonicalUrl } from '../../../core/site.config';
+import { contentFor } from '../../../core/data/tool-content';
+import { ADSENSE_SLOTS, canonicalUrl } from '../../../core/site.config';
+import { AdSlotComponent } from '../ad-slot/ad-slot.component';
 import { IconComponent } from '../icon/icon.component';
+import { SupportCardComponent } from '../support-card/support-card.component';
 import { ToolCardComponent } from '../tool-card/tool-card.component';
 
 /**
@@ -26,7 +29,7 @@ import { ToolCardComponent } from '../tool-card/tool-card.component';
 @Component({
   selector: 'app-tool-layout',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, IconComponent, ToolCardComponent],
+  imports: [RouterLink, IconComponent, ToolCardComponent, AdSlotComponent, SupportCardComponent],
   template: `
     @let t = tool();
     @if (t) {
@@ -74,6 +77,10 @@ import { ToolCardComponent } from '../tool-card/tool-card.component';
           <ng-content />
         </section>
 
+        @if (slots.toolMid) {
+          <app-ad-slot [slot]="slots.toolMid" [minHeight]="280" />
+        }
+
         <section class="mt-14">
           <h2 class="mb-4 text-2xl font-bold tracking-tight text-fg">About {{ t.name }}</h2>
           <div class="prose-qt max-w-none">
@@ -83,6 +90,32 @@ import { ToolCardComponent } from '../tool-card/tool-card.component';
             <ng-content select="[extraCopy]" />
           </div>
         </section>
+
+        @let extra = content();
+        @if (extra) {
+          <section class="mt-12">
+            <h2 class="mb-4 text-2xl font-bold tracking-tight text-fg">
+              How {{ t.name }} works in your browser
+            </h2>
+            <div class="prose-qt max-w-none">
+              @for (paragraph of extra.howItWorks; track $index) {
+                <p>{{ paragraph }}</p>
+              }
+            </div>
+          </section>
+
+          <section class="mt-12">
+            <h2 class="mb-4 text-2xl font-bold tracking-tight text-fg">When to use it</h2>
+            <ul class="space-y-3">
+              @for (useCase of extra.useCases; track $index) {
+                <li class="flex gap-3 text-muted">
+                  <app-icon name="check-circle" class="mt-0.5 h-5 w-5 shrink-0 text-brand" />
+                  <span>{{ useCase }}</span>
+                </li>
+              }
+            </ul>
+          </section>
+        }
 
         @if (t.faqs.length) {
           <section class="mt-12">
@@ -116,6 +149,12 @@ import { ToolCardComponent } from '../tool-card/tool-card.component';
             </div>
           </section>
         }
+
+        <app-support-card [heading]="'Did ' + t.name + ' save you a few minutes?'" />
+
+        @if (slots.toolFoot) {
+          <app-ad-slot [slot]="slots.toolFoot" [minHeight]="280" />
+        }
       </article>
     } @else {
       <div class="mx-auto max-w-xl px-4 py-24 text-center">
@@ -144,6 +183,14 @@ export class ToolLayoutComponent implements OnInit {
     const t = this.tool();
     return t ? this.toolService.related(t, 3) : [];
   });
+
+  /** Long-form copy for the pages that compete on high-volume search terms. */
+  protected readonly content = computed(() => {
+    const t = this.tool();
+    return t ? contentFor(t.id) : undefined;
+  });
+
+  protected readonly slots = ADSENSE_SLOTS;
 
   /** Local mirror so the button re-renders under OnPush. */
   protected readonly isFavorite = signal(false);
