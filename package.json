@@ -2,6 +2,8 @@
   "name": "ondevice-tools",
   "version": "1.0.0",
   "description": "OnDevice Tools \u2014 a collection of free, fully client-side browser utilities.",
+  "license": "AGPL-3.0-or-later",
+  "author": "Priyabrata Saha",
   "private": true,
   "scripts": {
     "ng": "ng",

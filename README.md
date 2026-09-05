@@ -220,6 +220,51 @@ and a generated `sitemap.xml`.
 
 ## Privacy
 
-Three `localStorage` keys (`qt.theme`, `qt.favorites`, `qt.recent`) hold user preferences. Nothing
-else is stored and nothing is transmitted. The only third-party request is the web font from Google
-Fonts; blocking it changes the typeface and nothing else.
+Three `localStorage` keys (`qt.theme`, `qt.favorites`, `qt.recent`) hold user preferences. They are
+never transmitted.
+
+The distinction the site makes, and which the copy is careful to hold, is between **content** and
+**visit**:
+
+- **Content is never transmitted.** Whatever a visitor pastes, opens or generates is processed by
+  JavaScript on their own device. There is no backend that could receive it.
+- **The visit is measured**, like on most sites. Third-party requests are Google Fonts (typeface),
+  Google AdSense (funds the site, sets cookies) and Cloudflare Web Analytics (cookieless, aggregate).
+
+`src/app/pages/privacy/privacy.component.ts` states this in the terms a visitor sees. Its
+third-party disclosures are gated on `ADS_ENABLED` and `CF_ANALYTICS_TOKEN`, so the policy cannot
+describe something the build is not doing — or stay silent once it is. If the site starts doing
+something new, that page changes first.
+
+## License
+
+Licensed under the **GNU Affero General Public License v3.0 or later** (AGPL-3.0-or-later). The full
+text is in [`LICENSE`](LICENSE).
+
+    OnDevice Tools — free browser-based tools that never upload your data
+    Copyright (C) 2026 Priyabrata Saha
+
+    This program is free software: you can redistribute it and/or modify it under
+    the terms of the GNU Affero General Public License as published by the Free
+    Software Foundation, either version 3 of the License, or (at your option) any
+    later version.
+
+    This program is distributed in the hope that it will be useful, but WITHOUT
+    ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+    FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+    details.
+
+    You should have received a copy of the GNU Affero General Public License along
+    with this program. If not, see <https://www.gnu.org/licenses/>.
+
+### Why AGPL rather than MIT
+
+The AGPL's distinguishing feature is **section 13**: anyone who modifies this code and lets users
+interact with it over a network must offer those users the corresponding source. For a hosted web
+app that is the clause that matters — a permissive licence would let someone run a modified, closed
+copy as a competing service. AGPL does not prevent that, but it requires them to publish their
+changes.
+
+It does not restrict *use*. Anyone may run, study, modify and self-host this, commercially included.
+
+All dependencies are MIT, Apache-2.0 or 0BSD, which combine into an AGPL-3.0 work without conflict.
