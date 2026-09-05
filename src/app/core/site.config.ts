@@ -86,7 +86,7 @@ export const SITE_FOUNDED = '2026';
  * instead of Google Analytics — the privacy page makes that claim explicitly.
  * Empty means no beacon is loaded and no analytics host is allowed by the CSP.
  */
-export const CF_ANALYTICS_TOKEN = '';
+export const CF_ANALYTICS_TOKEN = '9e856e8367e44f9e82e6ba782845890c';
 
 /**
  * Ad unit ids from the AdSense dashboard (the `data-ad-slot` values).

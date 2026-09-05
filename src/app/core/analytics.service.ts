@@ -28,7 +28,10 @@ export class AnalyticsService {
 
     const script = this.document.createElement('script');
     script.id = BEACON_ID;
-    script.defer = true;
+    // Cloudflare ships this as an ES module, so it must be loaded as one — a
+    // classic <script> would fail to parse it. Modules are deferred already,
+    // which is why there is no defer attribute here.
+    script.type = 'module';
     script.src = BEACON_SRC;
     script.setAttribute('data-cf-beacon', JSON.stringify({ token: CF_ANALYTICS_TOKEN }));
     head.appendChild(script);
