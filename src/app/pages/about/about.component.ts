@@ -1,7 +1,14 @@
 import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { SeoService } from '../../core/seo.service';
-import { DONATION_URL, EMAIL, SITE_AUTHOR, SITE_FOUNDED } from '../../core/site.config';
+import {
+  DONATION_URL,
+  EMAIL,
+  LICENSE_NAME,
+  SITE_AUTHOR,
+  SITE_FOUNDED,
+  SOURCE_URL,
+} from '../../core/site.config';
 import { ToolService } from '../../core/tool.service';
 
 @Component({
@@ -98,6 +105,28 @@ import { ToolService } from '../../core/tool.service';
           from anyone who does not.
         </p>
 
+        <h2>You can read the code</h2>
+        <p>
+          The whole site is open source, on
+          <a [href]="sourceUrl" target="_blank" rel="noopener">GitHub</a>, under the
+          {{ licenseName }} licence. That matters more here than it would on most projects: the
+          central claim is about what this software does <em>not</em> do, and a claim like that is
+          worth more when you can check it than when you are asked to take it on trust.
+        </p>
+        <p>
+          If you would rather verify it in thirty seconds than read a codebase, open your browser's
+          developer tools, switch to the Network tab, and use any tool on the site. Nothing you
+          typed or opened will appear in any request. Or turn off your connection entirely — once
+          the service worker has cached the site, every tool still works, which is difficult to
+          fake.
+        </p>
+        <p>
+          The licence is deliberate. {{ licenseName }} lets anyone run, study, modify and self-host
+          this, commercially included — but if someone modifies it and offers it to others over a
+          network, they have to publish their changes too. A permissive licence would let a
+          modified, closed copy be run as a competing service with nothing given back.
+        </p>
+
         <h2>What is not here</h2>
         <p>
           No account system, no cloud storage, no sync between devices, no team features and no
@@ -127,6 +156,8 @@ export class AboutComponent implements OnInit {
   protected readonly founded = SITE_FOUNDED;
   protected readonly email = EMAIL;
   protected readonly donationUrl = DONATION_URL;
+  protected readonly sourceUrl = SOURCE_URL;
+  protected readonly licenseName = LICENSE_NAME;
 
   ngOnInit(): void {
     this.seo.apply({

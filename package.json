@@ -3,6 +3,14 @@
   "version": "1.0.0",
   "description": "OnDevice Tools \u2014 a collection of free, fully client-side browser utilities.",
   "license": "AGPL-3.0-or-later",
+  "homepage": "https://ondevice-tools.org",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/priyabrataeee/ondevice-tools.git"
+  },
+  "bugs": {
+    "url": "https://github.com/priyabrataeee/ondevice-tools/issues"
+  },
   "author": "Priyabrata Saha",
   "private": true,
   "scripts": {

@@ -73,6 +73,20 @@ export const CONTACT_EMAIL = EMAIL.contact;
  */
 export const DONATION_URL = 'https://buymeacoffee.com/priyabrataeee';
 
+/**
+ * Public source repository.
+ *
+ * This is not decoration. The site is licensed AGPL-3.0-or-later, and section 13
+ * of that licence requires that anyone interacting with the software over a
+ * network be offered the corresponding source. A link reachable from every page
+ * is how that obligation is met — and it is also what makes the site's central
+ * claim checkable rather than merely asserted.
+ */
+export const SOURCE_URL = 'https://github.com/priyabrataeee/ondevice-tools';
+
+/** SPDX identifier, shown next to the source link. */
+export const LICENSE_NAME = 'AGPL-3.0';
+
 /** Shown on the About page and emitted as the schema.org Organization founder. */
 export const SITE_AUTHOR = 'Priyabrata Saha';
 

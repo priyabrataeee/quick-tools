@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { CommandPaletteService } from '../../core/command-palette.service';
-import { DONATION_URL } from '../../core/site.config';
+import { DONATION_URL, LICENSE_NAME, SOURCE_URL } from '../../core/site.config';
 import { ThemeService } from '../../core/theme.service';
 import { ToolService } from '../../core/tool.service';
 import { CommandPaletteComponent } from '../../shared/components/command-palette/command-palette.component';
@@ -200,7 +200,16 @@ import { ToastContainerComponent } from '../../shared/components/toast/toast-con
           <div
             class="mt-10 flex flex-col items-center justify-between gap-3 border-t border-line pt-6 text-sm text-faint sm:flex-row"
           >
-            <p>© {{ year }} OnDevice Tools — free forever, no account required.</p>
+            <p>
+              © {{ year }} OnDevice Tools — free forever, no account required.
+              <a
+                [href]="sourceUrl"
+                target="_blank"
+                rel="noopener"
+                class="underline transition-colors hover:text-fg"
+                >Open source ({{ licenseName }})</a
+              >.
+            </p>
             <p class="flex items-center gap-1.5">
               <app-icon name="lock" class="h-3.5 w-3.5" />
               100% client-side processing
@@ -217,6 +226,8 @@ export class MainLayoutComponent {
   private readonly toolService = inject(ToolService);
 
   protected readonly donationUrl = DONATION_URL;
+  protected readonly sourceUrl = SOURCE_URL;
+  protected readonly licenseName = LICENSE_NAME;
   protected readonly mobileOpen = signal(false);
   protected readonly year = new Date().getFullYear();
   protected readonly toolCount = this.toolService.tools().length;
@@ -253,6 +264,7 @@ export class MainLayoutComponent {
           { path: '/contact', label: 'Contact', external: false },
           { path: '/privacy', label: 'Privacy', external: false },
           { path: '/terms', label: 'Terms', external: false },
+          { path: SOURCE_URL, label: 'Source code', external: true },
           { path: DONATION_URL, label: 'Buy me a coffee', external: true },
         ],
       },

@@ -1,16 +1,80 @@
 # OnDevice Tools
 
-A collection of **63 free browser-based utilities** for developers, designers and writers.
+**63 free browser tools that never upload your data.**
 
-Every tool runs as JavaScript inside the visitor's own browser. There is no backend, no upload
-step and no account — which is why results are instant, files stay private, and the whole site
-keeps working offline once it has been visited.
+[**ondevice-tools.org**](https://ondevice-tools.org) &nbsp;·&nbsp;
+[How it works](#how-it-works) &nbsp;·&nbsp;
+[Run it locally](#getting-started) &nbsp;·&nbsp;
+[Add a tool](#adding-a-tool)
+
+[![License: AGPL v3](https://img.shields.io/badge/License-AGPL_v3-0f5f8a.svg)](LICENSE)
+![No backend](https://img.shields.io/badge/backend-none-1c7048)
+![Works offline](https://img.shields.io/badge/offline-yes-1c7048)
+
+<!-- A product screenshot converts better than a branded card. Capture the home page
+     at 1280×800 and save it as docs/screenshot.png, then swap the src below. -->
+
+![OnDevice Tools](https://ondevice-tools.org/og-image.png)
+
+---
+
+Most free online tools work the same way: you choose a file, the page uploads it to a server you
+know nothing about, something happens there, and a result comes back. For a throwaway snippet
+that's fine. For a contract, a passport scan, a database dump, or a JWT from a live environment,
+it's a decision most people wouldn't make consciously if the page said out loud what it was doing.
+
+This site removes the decision. Every tool here is JavaScript that runs on your own machine. Your
+file is read by the browser, processed by the browser, and handed back by the browser. **There is
+no upload step to opt out of, because there is no server capable of receiving one.**
+
+## The thirty-second proof
+
+Don't take the claim on trust — it's falsifiable, which is the point of publishing the source:
+
+1. Open <https://ondevice-tools.org>, press <kbd>F12</kbd>, switch to the **Network** tab.
+2. Use any tool. Compress an image, decode a JWT, merge a PDF.
+3. Nothing you typed or opened appears in any request.
+
+Or skip all that and **turn off your wifi**. Once the service worker has cached the site, every
+tool still works. Software that genuinely uploads your data cannot run on a plane.
+
+## What's in it
+
+| | |
+| --- | --- |
+| **Developer** | JSON / XML / YAML / SQL formatters, Base64 and URL encoders, JWT decoder, hashing, live regex tester, cron builder |
+| **Text** | Diff and compare, word and character counts, case conversion, slugs, sorting, deduplication |
+| **Image** | Compress, resize, crop, convert, extract palettes, generate favicons — all via Canvas |
+| **PDF** | Merge, split, rotate, build from images |
+| **CSS & colour** | Shadow, gradient, grid and flexbox generators, colour conversion, WCAG contrast checking |
+| **Calculators** | Percentages, EMI, SIP, GST, compound interest, unit conversion, date arithmetic |
+
+Plus a <kbd>Ctrl</kbd>+<kbd>K</kbd> command palette, favourites and history in `localStorage`, dark
+mode, and a PWA install.
+
+## How it works
+
+Each of the 63 tools is prerendered to plain HTML at build time and served as a static file from a
+CDN — the same way an image is served. Opening a tool downloads a small JavaScript bundle for that
+one tool and runs it locally.
+
+The heavy lifting uses capabilities browsers already ship: **Canvas** for image compression and
+resizing, the **File API** for reading files you choose, **Web Crypto** for hashing, and the
+built-in parsers for JSON, XML and YAML. Longer jobs run in a **Web Worker** so the page stays
+responsive. None of that involves a network request.
+
+## An honest note on funding
 
 The site is funded by advertising, so page views are measured and ad cookies are set. The content
 you put into a tool is a separate matter: it is never transmitted, because there is no server that
-could receive it. `src/app/pages/privacy/privacy.component.ts` states that distinction in the terms
-a visitor sees, and it should stay accurate — if the site starts doing something new, that page
-changes first.
+could receive it.
+
+An advertiser can know you visited the image compressor. It cannot know anything about the image.
+
+`src/app/pages/privacy/privacy.component.ts` states that distinction in the terms a visitor sees.
+Its third-party disclosures are gated on `ADS_ENABLED` and `CF_ANALYTICS_TOKEN`, so the policy
+can't describe something the build isn't doing — or stay silent once it is. If the site starts
+doing something new, that page changes first.
 
 ---
 
@@ -220,21 +284,32 @@ and a generated `sitemap.xml`.
 
 ## Privacy
 
-Three `localStorage` keys (`qt.theme`, `qt.favorites`, `qt.recent`) hold user preferences. They are
-never transmitted.
+The reasoning is in [An honest note on funding](#an-honest-note-on-funding). This is the concrete
+inventory.
 
-The distinction the site makes, and which the copy is careful to hold, is between **content** and
-**visit**:
+**Stored on the visitor's device**, never transmitted:
 
-- **Content is never transmitted.** Whatever a visitor pastes, opens or generates is processed by
-  JavaScript on their own device. There is no backend that could receive it.
-- **The visit is measured**, like on most sites. Third-party requests are Google Fonts (typeface),
-  Google AdSense (funds the site, sets cookies) and Cloudflare Web Analytics (cookieless, aggregate).
+| Key | Holds |
+| --- | --- |
+| `qt.theme` | light / dark / system preference |
+| `qt.favorites` | ids of saved tools |
+| `qt.recent` | ids of the last few tools opened |
 
-`src/app/pages/privacy/privacy.component.ts` states this in the terms a visitor sees. Its
-third-party disclosures are gated on `ADS_ENABLED` and `CF_ANALYTICS_TOKEN`, so the policy cannot
-describe something the build is not doing — or stay silent once it is. If the site starts doing
-something new, that page changes first.
+Clearing site data removes all three, and every tool behaves identically without them.
+
+**Third-party requests**, all of them:
+
+| Origin | Purpose | Cookies |
+| --- | --- | --- |
+| `fonts.googleapis.com` / `fonts.gstatic.com` | Inter typeface | no |
+| `pagead2.googlesyndication.com` + Google ad hosts | AdSense — funds the site | yes |
+| `static.cloudflareinsights.com` | Cloudflare Web Analytics — aggregate page views | no |
+
+Once the service worker has cached the app, the tools work offline with none of the above.
+
+Anything that changes this list must change
+`src/app/pages/privacy/privacy.component.ts` in the same commit, and the CSP in
+`scripts/prepare-cloudflare.mjs` will need the new origin or the request will be blocked.
 
 ## License
 
